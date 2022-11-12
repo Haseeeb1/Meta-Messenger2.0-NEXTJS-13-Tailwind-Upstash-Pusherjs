@@ -4,28 +4,33 @@ import { FormEvent, useState } from "react";
 import { Message } from "../typings";
 import useSWR from "swr";
 import fetcher from "../utils/fetchMessages";
+import { unstable_getServerSession } from "next-auth/next";
 
-function ChatInput() {
+type Props = {
+  session: Awaited<ReturnType<typeof unstable_getServerSession>>;
+};
+
+function ChatInput({ session }: Props) {
   const [input, setInput] = useState("");
   const { data: messages, error, mutate } = useSWR("/api/getMessages", fetcher);
 
   console.log(messages);
   const addMessage = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!input) return;
+    if (!input || !session) return;
 
     const messageToSend = input;
     setInput("");
 
     const id = uuid();
+
     const message: Message = {
       id,
       message: messageToSend,
       created_at: Date.now(),
-      username: "ELON Mota",
-      profilePic:
-        "https://1000logos.net/wp-content/uploads/2021/10/logo-Meta.png",
-      email: "meta@gmail.com",
+      username: session.user?.name!,
+      profilePic: session.user?.image!,
+      email: session.user?.email!,
     };
 
     const uploadMessageToUpstash = async () => {
@@ -53,6 +58,7 @@ function ChatInput() {
       className="bg-white fixed bottom-0 z-50 w-full flex px-10 py-5 space-x-2 border-t border-gray-100"
     >
       <input
+        disabled={!session}
         value={input}
         onChange={(e) => setInput(e.target.value)}
         type="text"

@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import LogoutButton from "./LogoutButton";
+import { unstable_getServerSession } from "next-auth/next";
 
-function Header() {
-  const session = true;
+async function Header() {
+  const session = await unstable_getServerSession();
 
   if (session)
     return (
@@ -13,13 +13,13 @@ function Header() {
           <Image
             className="rounded-full mx-2 object-contain"
             height={10}
-            src="https://1000logos.net/wp-content/uploads/2021/10/logo-Meta.png"
+            src={session.user?.image!}
             alt="logo"
             width={50}
           />
           <div>
             <p className="text-blue-400">Logged in as:</p>
-            <p className="font-bold text-lg">Haseeb</p>
+            <p className="font-bold text-lg">{session.user?.name}</p>
           </div>
         </div>
         <LogoutButton />

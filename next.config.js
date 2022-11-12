@@ -5,7 +5,6 @@ module.exports = {
     domains: [
       "scontent.fisb5-2.fna.fbcdn.net",
       "download.logo.wine",
-      "links.papreact.com",
       "1000logos.net",
       "upload.wikimedia.org",
     ],

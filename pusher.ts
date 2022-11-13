@@ -3,6 +3,7 @@ import ClientPusher from 'pusher-js';
 
 export const serverPusher=new Pusher({
     //YOUR PUSHER CONFIG
+    //4 lines
   useTLS: true
 })
 

@@ -1,4 +1,4 @@
-## Delpoyed Link:
+## Delpoyed Website Link:
 
 # Next.js + Tailwind CSS Example
 
